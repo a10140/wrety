@@ -5,6 +5,7 @@ Simple test to verify the WREP app can initialize without errors
 
 import sys
 import os
+import tempfile
 
 # Mock Kivy components for testing without GUI
 class MockWindow:
@@ -12,7 +13,7 @@ class MockWindow:
     width = 360
 
 class MockApp:
-    user_data_dir = '/tmp/wrep_test'
+    user_data_dir = tempfile.gettempdir()
     
 class MockColor:
     def __init__(self, *args): pass
@@ -64,8 +65,9 @@ try:
     
     # Test database operations
     print("\nTesting database operations...")
-    os.makedirs('/tmp/wrep_test', exist_ok=True)
-    db = sqlite3.connect('/tmp/wrep_test/wrep.db')
+    test_db_dir = os.path.join(tempfile.gettempdir(), 'wrep_test')
+    os.makedirs(test_db_dir, exist_ok=True)
+    db = sqlite3.connect(os.path.join(test_db_dir, 'wrep.db'))
     cursor = db.cursor()
     
     cursor.execute('''
@@ -117,7 +119,7 @@ try:
     
     # Cleanup
     db.close()
-    os.remove('/tmp/wrep_test/wrep.db')
+    os.remove(os.path.join(test_db_dir, 'wrep.db'))
     print("✓ Database cleanup successful")
     
     print("\n" + "=" * 50)

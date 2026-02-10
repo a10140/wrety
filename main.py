@@ -30,7 +30,7 @@ class WREPApp(App):
         # Use app's user data directory for database storage
         try:
             db_path = os.path.join(self.user_data_dir, 'wrep.db')
-        except:
+        except AttributeError:
             db_path = 'wrep.db'
         
         self.db = sqlite3.connect(db_path)

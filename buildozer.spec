@@ -19,8 +19,8 @@ source.include_exts = py,png,jpg,kv,atlas,db
 version = 1.0
 
 # (list) Application requirements
-# comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy==2.3.0,sqlite3
+# comma separated e.g. requirements = python3,kivy
+requirements = python3,kivy==2.3.0
 
 # (str) Supported orientation (one of landscape, sensorLandscape, portrait or all)
 orientation = portrait
