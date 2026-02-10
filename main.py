@@ -6,18 +6,16 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
-from kivy.uix.image import Image
 from kivy.core.window import Window
-from kivy.uix.togglebutton import ToggleButton
-from kivy.garden.navigationdrawer import NavigationDrawer
-from kivy.graphics import Color, RoundedRectangle
+from kivy.graphics import Color, Rectangle
 import sqlite3
 import json
 from datetime import datetime
 import uuid
+import os
 
 # 设置窗口大小和初始化
-Window.size = (360, 640) if Window.width < 500 else (720, 1080)
+Window.size = (360, 640)
 
 class WREPApp(App):
     def __init__(self, **kwargs):
@@ -29,7 +27,13 @@ class WREPApp(App):
         
     def init_db(self):
         """初始化本地SQLite数据库"""
-        self.db = sqlite3.connect('wrep.db')
+        # Use app's user data directory for database storage
+        try:
+            db_path = os.path.join(self.user_data_dir, 'wrep.db')
+        except:
+            db_path = 'wrep.db'
+        
+        self.db = sqlite3.connect(db_path)
         cursor = self.db.cursor()
         
         cursor.execute('''
@@ -168,7 +172,7 @@ class WREPApp(App):
         sidebar.canvas.before.clear()
         with sidebar.canvas.before:
             Color(0.04, 0.04, 0.05, 1)
-            RoundedRectangle(size=sidebar.size, pos=sidebar.pos)
+            Rectangle(size=sidebar.size, pos=sidebar.pos)
         
         # LOGO
         logo = Label(text='WREP', size_hint_y=0.1, font_size='24sp', bold=True)
