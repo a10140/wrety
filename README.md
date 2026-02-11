@@ -6,7 +6,18 @@ WREP AI Console - Android Application
 
 ## 快速开始
 
-### 方法一：使用构建脚本（推荐）
+### 方法一：从GitHub Actions下载APK（最简单）
+
+每次代码推送时，GitHub Actions会自动构建APK。你可以：
+
+1. 访问仓库的 [Actions](https://github.com/a10140/wrety/actions) 页面
+2. 选择最新的成功构建
+3. 在 "Artifacts" 部分下载 `wrep-android-apk`
+4. 解压后将APK传输到Android设备安装
+
+或者在发布版本时，APK会自动附加到Release中。
+
+### 方法二：使用构建脚本（本地构建）
 
 ```bash
 # 克隆仓库
@@ -17,7 +28,7 @@ cd wrety
 ./build.sh
 ```
 
-### 方法二：手动构建
+### 方法三：手动构建
 
 #### 前置要求
 - Linux系统（推荐Ubuntu 20.04+）

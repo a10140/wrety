@@ -1,5 +1,23 @@
 # WREP AI Console - 快速构建指南
 
+## 最简单方法：从GitHub Actions下载APK
+
+**无需任何环境配置！**
+
+1. 访问 [GitHub Actions 页面](https://github.com/a10140/wrety/actions)
+2. 点击最新的成功构建（绿色✓）
+3. 滚动到底部，在 "Artifacts" 部分下载 `wrep-android-apk`
+4. 解压ZIP文件，获取APK
+5. 将APK传输到Android手机并安装
+
+**注意：** 也可以在 [Releases 页面](https://github.com/a10140/wrety/releases) 下载正式发布版本的APK。
+
+---
+
+## 本地构建方法
+
+如果你想自己构建APK，请按照以下步骤：
+
 ## 一键构建APK
 
 ### 步骤 1: 准备环境（仅首次需要）
