@@ -6,18 +6,32 @@ WREP AI Console - Android Application
 
 一个基于Kivy框架的AI聊天应用，支持用户认证、会话管理和本地数据存储。
 
+## 🚀 云端一键打包（推荐）
+
+**无需任何环境配置，直接在GitHub云端构建APK！**
+
+### 立即在云端打包：
+
+1. 访问 [Actions 工作流页面](https://github.com/a10140/wrety/actions/workflows/build-apk.yml)
+2. 点击 **"Run workflow"** 按钮
+3. 选择分支（如 `main`）并点击绿色的 **"Run workflow"**
+4. 等待20-30分钟（首次）或5-10分钟（后续）
+5. 在 **"Artifacts"** 部分下载 `wrep-android-apk`
+
+📖 详细说明请查看：[云端打包完整指南](CLOUD_BUILD.md)
+
 ## 快速开始
 
-### 方法一：从GitHub Actions下载APK（最简单）
+### 方法一：从GitHub Actions下载APK（最简单，无需构建）
 
 每次代码推送时，GitHub Actions会自动构建APK。你可以：
 
 1. 访问仓库的 [Actions](https://github.com/a10140/wrety/actions) 页面
-2. 选择最新的成功构建
+2. 选择最新的成功构建（绿色✓）
 3. 在 "Artifacts" 部分下载 `wrep-android-apk`
 4. 解压后将APK传输到Android设备安装
 
-或者在发布版本时，APK会自动附加到Release中。
+或者在 [Releases](https://github.com/a10140/wrety/releases) 页面直接下载正式版本的APK。
 
 ### 方法二：使用构建脚本（本地构建）
 
