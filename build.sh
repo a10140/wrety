@@ -14,7 +14,7 @@ if ! command -v buildozer &> /dev/null; then
     echo ""
     echo "Please install buildozer first:"
     echo "  sudo apt update"
-    echo "  sudo apt install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev"
+    echo "  sudo apt install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo6 cmake libffi-dev libssl-dev"
     echo "  pip3 install --upgrade buildozer cython==0.29.33"
     exit 1
 fi
