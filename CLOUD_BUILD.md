@@ -9,7 +9,7 @@
 2. 点击右上角的 **"Run workflow"** 按钮
 
 3. 在弹出的对话框中：
-   - 选择要构建的分支（例如 `main` 或 `copilot/build-apk-package`）
+   - 选择要构建的分支（例如 `main` 或 `develop`）
    - 点击绿色的 **"Run workflow"** 按钮
 
 4. 等待构建完成（首次约20-30分钟，后续约5-10分钟）
