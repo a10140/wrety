@@ -1,5 +1,7 @@
 # wrety
 
+[![Build Android APK](https://github.com/a10140/wrety/actions/workflows/build-apk.yml/badge.svg)](https://github.com/a10140/wrety/actions/workflows/build-apk.yml)
+
 WREP AI Console - Android Application
 
 一个基于Kivy框架的AI聊天应用，支持用户认证、会话管理和本地数据存储。
