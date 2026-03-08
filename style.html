@@ -16,7 +16,8 @@
             --sidebar-width: 260px;
             --mobile-header-height: 60px;
             /* 品牌色：流光渐变 */
-            --brand-gradient: linear-gradient(135deg, #fff 0%, #a5b4fc 50%, #6366f1 100%);
+            --brand-accent: #a5b4fc;
+            --brand-gradient: linear-gradient(135deg, #fff 0%, var(--brand-accent) 50%, #6366f1 100%);
         }
 
         * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
@@ -108,18 +109,26 @@
         }
 
         .message {
-            max-width: 760px; margin: 0 auto; padding: 20px 24px;
+            max-width: 760px; margin: 0 auto; padding: 10px 24px;
             animation: slideIn 0.3s ease-out;
         }
         @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
+        /* Role label — no card, just a small inline identifier */
         .message-header {
-            display: flex; align-items: center; gap: 8px; margin-bottom: 8px;
-            font-size: 12px; color: var(--text-secondary); font-weight: 500;
+            display: flex; align-items: center; gap: 8px; margin-bottom: 5px;
+            font-size: 12px; font-weight: 600; letter-spacing: 0.3px;
         }
+        /* Assistant: brand-purple label on the left */
+        .message-assistant .message-header { color: var(--brand-accent); }
+        /* User: subtle label pushed to the right */
+        .message-user .message-header { justify-content: flex-end; color: var(--text-secondary); opacity: 0.5; }
+
         .message-content {
             font-size: 15px; line-height: 1.6; color: #d4d4d8; font-weight: 300; word-break: break-word;
         }
+        /* User text: indent from the left to visually separate from AI replies */
+        .message-user .message-content { padding-left: 40px; color: #c4c4c8; }
 
         /* --- 输入区 --- */
         #input-area-wrapper {
@@ -210,7 +219,7 @@
                 bottom: 10px; padding: 0 10px; padding-bottom: env(safe-area-inset-bottom);
             }
             .glass-input-panel { border-radius: 20px; padding: 12px; }
-            .message { padding: 15px 16px; }
+            .message { padding: 8px 16px; }
             .brand-container { display: none; } /* Hide sidebar logo on mobile */
         }
     </style>
@@ -397,11 +406,11 @@
 
             const isBot = msgData.role === 'assistant';
             const div = document.createElement('div');
-            div.className = 'message';
+            div.className = isBot ? 'message message-assistant' : 'message message-user';
 
             const header = isBot ?
-                `<div class="message-header"><span style="color:#a5b4fc; font-weight:bold;">✦ WREP AI</span></div>` :
-                `<div class="message-header" style="justify-content: flex-end; opacity: 0.5;">You</div>`;
+                `<div class="message-header">✦ WREP AI</div>` :
+                `<div class="message-header">You</div>`;
 
             let extraHtml = '';
             if(msgData.search_info) extraHtml += `<div class="collapse-card"><div class="collapse-header" onclick="this.nextElementSibling.classList.toggle('open')"><span>🌐 Network Data</span></div><div class="collapse-body">${msgData.search_info}</div></div>`;
@@ -426,7 +435,7 @@
             const container = document.getElementById('chat-container');
             const loadDiv = document.createElement('div');
             loadDiv.id = loadingId;
-            loadDiv.className = 'message';
+            loadDiv.className = 'message message-assistant';
             loadDiv.innerHTML = `<div class="message-header">✦ WREP AI</div><div class="message-content" style="color:#52525b;">Processing...</div>`;
             container.appendChild(loadDiv);
             container.scrollTop = container.scrollHeight;
