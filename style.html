@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #09090b;
+            --bg-color: #020810;
             --glass-bg: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.08);
             --text-primary: #ededed;
@@ -25,9 +25,85 @@
             margin: 0;
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-color);
-            background-image: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #09090b 60%); /* 背景微调为深蓝紫 */
             color: var(--text-primary);
             display: flex; height: 100vh; overflow: hidden;
+        }
+
+        /* === Liquid Deep-Sea Background === */
+        #liquid-bg {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1; overflow: hidden;
+            background: #020810;
+        }
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            will-change: transform;
+        }
+        .blob-1 {
+            width: 80vw; height: 80vw;
+            background: radial-gradient(circle at 40% 50%, rgba(0, 160, 220, 0.42) 0%, transparent 70%);
+            top: -25%; left: -15%;
+            animation: drift1 26s ease-in-out infinite;
+        }
+        .blob-2 {
+            width: 65vw; height: 65vw;
+            background: radial-gradient(circle at 50% 40%, rgba(0, 180, 140, 0.32) 0%, transparent 70%);
+            bottom: -20%; right: -15%;
+            animation: drift2 32s ease-in-out infinite;
+        }
+        .blob-3 {
+            width: 55vw; height: 55vw;
+            background: radial-gradient(circle at 50% 50%, rgba(40, 60, 220, 0.38) 0%, transparent 70%);
+            top: 25%; left: 15%;
+            animation: drift3 40s ease-in-out infinite;
+        }
+        .blob-4 {
+            width: 45vw; height: 45vw;
+            background: radial-gradient(circle at 50% 60%, rgba(0, 100, 200, 0.35) 0%, transparent 70%);
+            bottom: 15%; right: 15%;
+            animation: drift4 22s ease-in-out infinite;
+        }
+        .blob-5 {
+            width: 35vw; height: 35vw;
+            background: radial-gradient(circle at 50% 50%, rgba(0, 220, 180, 0.22) 0%, transparent 70%);
+            top: 8%; right: 8%;
+            animation: drift5 34s ease-in-out infinite;
+        }
+        @keyframes drift1 {
+            0%   { transform: translate(0, 0) scale(1); }
+            25%  { transform: translate(18vw, 22vh) scale(1.12); }
+            50%  { transform: translate(9vw, 38vh) scale(0.93); }
+            75%  { transform: translate(-6vw, 16vh) scale(1.06); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+        @keyframes drift2 {
+            0%   { transform: translate(0, 0) scale(1); }
+            33%  { transform: translate(-22vw, -28vh) scale(1.18); }
+            66%  { transform: translate(-11vw, -12vh) scale(0.88); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+        @keyframes drift3 {
+            0%   { transform: translate(0, 0) scale(1); }
+            20%  { transform: translate(12vw, -18vh) scale(1.07); }
+            40%  { transform: translate(22vw, 12vh) scale(0.93); }
+            60%  { transform: translate(6vw, 24vh) scale(1.12); }
+            80%  { transform: translate(-12vw, 6vh) scale(0.97); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+        @keyframes drift4 {
+            0%   { transform: translate(0, 0) scale(1); }
+            50%  { transform: translate(-18vw, -24vh) scale(1.22); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+        @keyframes drift5 {
+            0%   { transform: translate(0, 0) scale(1); }
+            25%  { transform: translate(-12vw, 18vh) scale(1.12); }
+            50%  { transform: translate(-24vw, 6vh) scale(0.88); }
+            75%  { transform: translate(-6vw, -12vh) scale(1.06); }
+            100% { transform: translate(0, 0) scale(1); }
         }
 
         ::-webkit-scrollbar { width: 0px; background: transparent; }
@@ -55,8 +131,8 @@
         /* --- 侧边栏 --- */
         #sidebar {
             width: var(--sidebar-width);
-            background: rgba(10, 10, 12, 0.8);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            background: rgba(3, 10, 22, 0.75);
+            backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
             border-right: 1px solid var(--glass-border);
             padding: 24px; display: flex; flex-direction: column;
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -92,7 +168,7 @@
         /* --- 主界面 --- */
         #main-chat {
             flex: 1; position: relative; display: flex; flex-direction: column;
-            background: radial-gradient(circle at 50% 100%, #111 0%, transparent 50%); width: 100%;
+            background: transparent; width: 100%;
         }
 
         #mobile-header {
@@ -108,11 +184,42 @@
         }
 
         .message {
-            max-width: 760px; margin: 0 auto; padding: 20px 24px;
-            animation: slideIn 0.3s ease-out;
+            max-width: 760px; margin: 0 auto; padding: 12px 24px;
+            animation: slideIn 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+            display: flex; flex-direction: column;
         }
-        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
+        /* AI (assistant) message */
+        .message.assistant .message-header {
+            display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
+            font-size: 12px; color: rgba(165, 180, 252, 0.7); font-weight: 500; letter-spacing: 0.5px;
+        }
+        .message.assistant .message-content {
+            font-size: 15px; line-height: 1.78; color: #d4d4d8; font-weight: 300;
+            word-break: break-word;
+            border-left: 2px solid rgba(99, 102, 241, 0.4);
+            padding-left: 16px; margin-left: 2px;
+        }
+
+        /* User message */
+        .message.user {
+            align-items: flex-end;
+        }
+        .message.user .message-header {
+            display: flex; align-items: center; justify-content: flex-end; gap: 8px;
+            margin-bottom: 6px; font-size: 12px; color: rgba(161, 161, 170, 0.5); font-weight: 500;
+        }
+        .message.user .message-content {
+            background: rgba(99, 102, 241, 0.14);
+            border: 1px solid rgba(99, 102, 241, 0.22);
+            border-radius: 18px 18px 4px 18px;
+            padding: 12px 18px; max-width: 85%;
+            font-size: 15px; line-height: 1.65; color: #ececee; font-weight: 400;
+            word-break: break-word;
+        }
+
+        /* Fallback for messages without role class */
         .message-header {
             display: flex; align-items: center; gap: 8px; margin-bottom: 8px;
             font-size: 12px; color: var(--text-secondary); font-weight: 500;
@@ -129,11 +236,16 @@
 
         .glass-input-panel {
             width: 720px; max-width: 100%;
-            background: rgba(20, 20, 22, 0.75);
-            backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px;
-            padding: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            background: rgba(5, 14, 28, 0.72);
+            backdrop-filter: blur(28px) saturate(180%); -webkit-backdrop-filter: blur(28px) saturate(180%);
+            border: 1px solid rgba(0, 120, 200, 0.18); border-radius: 24px;
+            padding: 16px 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06);
             display: flex; flex-direction: column; gap: 12px; transition: all 0.3s;
+        }
+        .glass-input-panel:focus-within {
+            border-color: rgba(0, 150, 210, 0.32);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 24px rgba(0, 100, 200, 0.12), inset 0 1px 0 rgba(255,255,255,0.08);
         }
 
         textarea {
@@ -177,20 +289,23 @@
         }
         .collapse-body.open { display: block; }
 
-        /* Auth */
         #login-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85); backdrop-filter: blur(15px);
+            background: rgba(2, 8, 16, 0.6); backdrop-filter: blur(12px);
             z-index: 1000; display: flex; justify-content: center; align-items: center;
         }
         .login-card {
-            background: #18181b; border: 1px solid var(--glass-border);
-            padding: 30px; border-radius: 24px; width: 90%; max-width: 360px; text-align: center;
+            background: rgba(10, 18, 32, 0.8); border: 1px solid rgba(0, 140, 200, 0.2);
+            padding: 36px; border-radius: 24px; width: 90%; max-width: 360px; text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.07);
+            backdrop-filter: blur(20px);
         }
         .login-input {
-            width: 100%; padding: 14px; margin: 8px 0; background: #27272a;
-            border: 1px solid transparent; border-radius: 12px; color: white; font-size: 16px;
+            width: 100%; padding: 14px; margin: 8px 0; background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; color: white; font-size: 16px;
+            transition: border-color 0.2s;
         }
+        .login-input:focus { border-color: rgba(0, 160, 220, 0.4); background: rgba(255,255,255,0.07); }
         .btn-full {
             width: 100%; padding: 14px; margin-top: 15px; border-radius: 12px; border:none;
             background: white; color: black; font-weight: 600; font-size: 16px; cursor: pointer;
@@ -213,9 +328,25 @@
             .message { padding: 15px 16px; }
             .brand-container { display: none; } /* Hide sidebar logo on mobile */
         }
+        /* Reduce motion for accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            .blob { animation: none; }
+        }
+        /* Lighter blur on mobile for performance */
+        @media (max-width: 768px) {
+            .blob { filter: blur(55px); }
+        }
     </style>
 </head>
 <body>
+
+    <div id="liquid-bg" aria-hidden="true">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+        <div class="blob blob-4"></div>
+        <div class="blob blob-5"></div>
+    </div>
 
     <div id="login-overlay">
         <div class="login-card">
@@ -397,7 +528,7 @@
 
             const isBot = msgData.role === 'assistant';
             const div = document.createElement('div');
-            div.className = 'message';
+            div.className = 'message ' + (isBot ? 'assistant' : 'user');
 
             const header = isBot ?
                 `<div class="message-header"><span style="color:#a5b4fc; font-weight:bold;">✦ WREP AI</span></div>` :
@@ -426,7 +557,7 @@
             const container = document.getElementById('chat-container');
             const loadDiv = document.createElement('div');
             loadDiv.id = loadingId;
-            loadDiv.className = 'message';
+            loadDiv.className = 'message assistant';
             loadDiv.innerHTML = `<div class="message-header">✦ WREP AI</div><div class="message-content" style="color:#52525b;">Processing...</div>`;
             container.appendChild(loadDiv);
             container.scrollTop = container.scrollHeight;
