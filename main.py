@@ -246,15 +246,39 @@ class WREPApp(App):
         cursor.execute('SELECT role, content FROM messages WHERE session_id = ? ORDER BY created_at',
                       (self.current_session,))
         
+        MESSAGE_WIDTH_RATIO = 0.7  # bubble label wraps at 70% of chat container width
+
         for role, content in cursor.fetchall():
-            msg_label = Label(
-                text=f'[{role}]: {content}',
+            is_user = (role == 'user')
+            # Bubble container for alignment
+            row = BoxLayout(
+                orientation='horizontal',
                 size_hint_y=None,
-                height=80,
-                text_size=(self.chat_messages.width - 20, None),
-                markup=True
+                height=60,
+                padding=(0, 4)
             )
-            self.chat_messages.add_widget(msg_label)
+            # Spacer on the left for user messages (right-align)
+            if is_user:
+                row.add_widget(Label(size_hint_x=0.25))
+
+            label_text = f'[b]{"You" if is_user else "WREP AI"}[/b]\n{content}'
+            msg_label = Label(
+                text=label_text,
+                size_hint_x=0.75,
+                size_hint_y=None,
+                height=60,
+                text_size=(self.chat_messages.width * MESSAGE_WIDTH_RATIO, None),
+                markup=True,
+                halign='right' if is_user else 'left',
+                valign='middle'
+            )
+            row.add_widget(msg_label)
+
+            # Spacer on the right for assistant messages (left-align)
+            if not is_user:
+                row.add_widget(Label(size_hint_x=0.25))
+
+            self.chat_messages.add_widget(row)
 
     def send_message(self):
         """发送消息"""
