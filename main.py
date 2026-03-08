@@ -41,9 +41,17 @@ class WREPApp(App):
                 id INTEGER PRIMARY KEY,
                 username TEXT UNIQUE NOT NULL,
                 password TEXT NOT NULL,
+                display_name TEXT DEFAULT '',
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         ''')
+        
+        # Add display_name column to existing databases (migration)
+        try:
+            cursor.execute('ALTER TABLE users ADD COLUMN display_name TEXT DEFAULT ""')
+            self.db.commit()
+        except sqlite3.OperationalError:
+            pass  # Column already exists
         
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS chat_sessions (
@@ -203,6 +211,11 @@ class WREPApp(App):
         history_scroll.add_widget(history_list)
         sidebar.add_widget(history_scroll)
         
+        # 个人资料按钮
+        profile_btn = Button(text='Profile', size_hint_y=0.1)
+        profile_btn.bind(on_press=lambda x: self.show_profile())
+        sidebar.add_widget(profile_btn)
+
         # 退出按钮
         logout_btn = Button(text='Logout', size_hint_y=0.1)
         logout_btn.bind(on_press=lambda x: self.logout())
@@ -290,6 +303,94 @@ class WREPApp(App):
         """创建新聊天"""
         self.create_new_session()
         self.chat_messages.clear_widgets()
+
+    def show_profile(self):
+        """显示个人资料编辑界面"""
+        cursor = self.db.cursor()
+        cursor.execute('SELECT display_name FROM users WHERE username = ?', (self.user,))
+        row = cursor.fetchone()
+        current_display_name = row[0] if row and row[0] else ''
+
+        popup_layout = BoxLayout(orientation='vertical', padding=15, spacing=10)
+
+        popup_layout.add_widget(Label(text=f'Username: {self.user}', size_hint_y=0.12))
+
+        popup_layout.add_widget(Label(text='Display Name:', size_hint_y=0.1))
+        display_name_input = TextInput(
+            multiline=False,
+            text=current_display_name,
+            hint_text='Display Name (optional)',
+            size_hint_y=0.12,
+            padding=8
+        )
+        popup_layout.add_widget(display_name_input)
+
+        popup_layout.add_widget(Label(text='New Password (leave blank to keep current):', size_hint_y=0.1))
+        new_password_input = TextInput(
+            multiline=False,
+            hint_text='New Password',
+            password=True,
+            size_hint_y=0.12,
+            padding=8
+        )
+        popup_layout.add_widget(new_password_input)
+
+        popup_layout.add_widget(Label(text='Confirm New Password:', size_hint_y=0.1))
+        confirm_password_input = TextInput(
+            multiline=False,
+            hint_text='Confirm New Password',
+            password=True,
+            size_hint_y=0.12,
+            padding=8
+        )
+        popup_layout.add_widget(confirm_password_input)
+
+        btn_layout = BoxLayout(size_hint_y=0.15, spacing=10)
+
+        popup = Popup(title='Edit Profile', content=popup_layout, size_hint=(0.9, 0.85))
+
+        def save_action():
+            self.update_profile(
+                display_name_input.text.strip(),
+                new_password_input.text,
+                confirm_password_input.text,
+                popup
+            )
+
+        save_btn = Button(text='Save')
+        save_btn.bind(on_press=lambda x: save_action())
+        btn_layout.add_widget(save_btn)
+
+        cancel_btn = Button(text='Cancel')
+        cancel_btn.bind(on_press=popup.dismiss)
+        btn_layout.add_widget(cancel_btn)
+
+        popup_layout.add_widget(btn_layout)
+        popup.open()
+
+    def update_profile(self, display_name, new_password, confirm_password, popup):
+        """保存用户资料更新"""
+        if new_password:
+            if new_password != confirm_password:
+                self.show_message('错误', '两次输入的密码不一致')
+                return
+            if len(new_password) < 8:
+                self.show_message('错误', '密码长度至少为8位')
+                return
+            cursor = self.db.cursor()
+            cursor.execute(
+                'UPDATE users SET display_name = ?, password = ? WHERE username = ?',
+                (display_name, new_password, self.user)
+            )
+        else:
+            cursor = self.db.cursor()
+            cursor.execute(
+                'UPDATE users SET display_name = ? WHERE username = ?',
+                (display_name, self.user)
+            )
+        self.db.commit()
+        popup.dismiss()
+        self.show_message('成功', '个人资料已更新')
 
     def logout(self):
         """退出登录"""
