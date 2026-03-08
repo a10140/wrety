@@ -75,6 +75,7 @@ try:
             id INTEGER PRIMARY KEY,
             username TEXT UNIQUE NOT NULL,
             password TEXT NOT NULL,
+            display_name TEXT DEFAULT '',
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     ''')
@@ -116,6 +117,26 @@ try:
     user = cursor.fetchone()
     if user:
         print("✓ Database query operation successful")
+    
+    # Test profile update operations
+    print("\nTesting profile update operations...")
+    cursor.execute('UPDATE users SET display_name = ? WHERE username = ?',
+                  ('Test User', test_username))
+    db.commit()
+    cursor.execute('SELECT display_name FROM users WHERE username = ?', (test_username,))
+    row = cursor.fetchone()
+    assert row and row[0] == 'Test User', "Display name update failed"
+    print("✓ Profile display_name update successful")
+
+    new_password = "new_pass"
+    cursor.execute('UPDATE users SET password = ?, display_name = ? WHERE username = ?',
+                  (new_password, 'Updated Name', test_username))
+    db.commit()
+    cursor.execute('SELECT password, display_name FROM users WHERE username = ?', (test_username,))
+    row = cursor.fetchone()
+    assert row and row[0] == new_password, "Password update failed"
+    assert row and row[1] == 'Updated Name', "Display name update with password failed"
+    print("✓ Profile password and display_name update successful")
     
     # Cleanup
     db.close()
